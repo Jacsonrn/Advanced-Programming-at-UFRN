@@ -108,8 +108,15 @@ struct Ponto
   // Sobrecarga de operadores
   // Utilizados pelos algoritmos STL
   /* ***********  /
-  /  FALTA FAZER  /
+  /  FEITO PELO ALUNO EM 29 DE ABRIL DE 2026  /
   /  *********** */
+  bool operator==(const Ponto& P) const {
+    return id == P.id;
+}
+
+bool operator==(const IDPonto& ID) const {
+    return id == ID;
+}
 
   // Distancia entre 2 pontos (formula de haversine)
   double distancia(const Ponto& P) const;

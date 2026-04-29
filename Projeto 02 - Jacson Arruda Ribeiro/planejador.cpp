@@ -123,8 +123,10 @@ void Planejador::ler(const std::string& arq_pontos,
 {
   // Vetores temporarios para armazenamento dos Pontos e Rotas lidos.
   /* ***********  /
-  /  FALTA FAZER  /
+  /   FEITO PELO ALUNO EM 29 DE ABRIL DE 2026 /
   /  *********** */
+  vector<Ponto> pts_temp;
+  vector<Rota> rts_temp;
 
   // Leh os Pontos do arquivo e armazena no vetor temporario de Pontos.
   // Em caso de qualquer erro, gera excecao ios_base::failure com mensagem:
@@ -138,7 +140,7 @@ void Planejador::ler(const std::string& arq_pontos,
     //    "ID;Nome;Latitude;Longitude"
     //    (Em caso de erro ou valor lido diferente, codigo 2)
     //    Consome os separadores apos o cabecalho
-    // 3) Enquanto o arquivo não acabar (eof), repita a leitura de cada um dos Pontos:
+    // 3) Enquanto o arquivo nï¿½o acabar (eof), repita a leitura de cada um dos Pontos:
     //    | 3.1) Leh a ID e elimina eventuais separadores no final da string
     //    |      (Em caso de erro ou conteudo lido vazio, codigo 3)
     //    |      O teste se a ID eh valida serah feito ao testar o Ponto
@@ -161,11 +163,57 @@ void Planejador::ler(const std::string& arq_pontos,
     //    |      de Pontos lidos ateh agora
     //    |      (Em caso de erro, codigo 9)
     //    | 3.9) Insere o Ponto lido no vetor temporario de Pontos
-    // 4) Se não foi lido nenhum Ponto, gera erro (codigo 10)
+    // 4) Se nï¿½o foi lido nenhum Ponto, gera erro (codigo 10)
     // 5) Fecha o arquivo de Pontos
     /* ***********  /
-    /  FALTA FAZER  /
+    /   FEITO PELO ALUNO EM 29 DE ABRIL DE 2026  /
     /  *********** */
+     ifstream arq(arq_pontos);
+    if (!arq.is_open()) throw 1;
+
+    string cabecalho;
+    arq >> ws;
+    getline(arq, cabecalho);
+    trim(cabecalho);
+    if (arq.fail() || cabecalho != "ID;Nome;Latitude;Longitude") throw 2;
+
+    arq >> ws;
+    while (!arq.eof()) {
+        Ponto p;
+        string id_str;
+        char pv;
+
+        getline(arq, id_str, ';');
+        trim(id_str);
+        if (arq.fail() || id_str.empty()) throw 3;
+        p.id.set(move(id_str));
+
+        arq >> ws;
+        getline(arq, p.nome, ';');
+        trim(p.nome);
+        if (arq.fail() || p.nome.empty()) throw 4;
+
+        arq >> p.latitude;
+        if (arq.fail()) throw 5;
+
+        arq >> pv;
+        if (arq.fail() || pv != ';') throw 6;
+
+        arq >> p.longitude;
+        if (arq.fail()) throw 7;
+
+        arq >> ws;
+
+        if (!p.valid()) throw 8;
+
+        auto it = find(pts_temp.begin(), pts_temp.end(), p);
+        if (it != pts_temp.end()) throw 9;
+
+        pts_temp.push_back(p);
+    }
+
+    if (pts_temp.empty()) throw 10;
+    arq.close();
   }
   catch (int i)
   {
@@ -187,7 +235,7 @@ void Planejador::ler(const std::string& arq_pontos,
     //    "ID;Nome;Extremidade 1;Extremidade 2;Comprimento"
     //    (Em caso de erro ou valor lido diferente, codigo 2)
     //    Consome os separadores apos o cabecalho
-    // 3) Enquanto o arquivo não acabar (eof), repita a leitura de cada uma das Rotas:
+    // 3) Enquanto o arquivo nï¿½o acabar (eof), repita a leitura de cada uma das Rotas:
     //    | 3.1) Leh a ID e elimina eventuais separadores no final da string
     //    |      (Em caso de erro ou conteudo lido vazio, codigo 3)
     //    |      O teste se a ID eh valida serah feito ao testar a Rota
@@ -219,7 +267,7 @@ void Planejador::ler(const std::string& arq_pontos,
     //    |      de Rotas lidas ateh agora
     //    |      (Em caso de erro, codigo 11)
     //    | 3.11)Insere a Rota lida no vetor temporario de Rotas
-    // 4) Se não foi lido nenhuma Rota, gera erro (codigo 12)
+    // 4) Se nï¿½o foi lido nenhuma Rota, gera erro (codigo 12)
     // 5) Fecha o arquivo de Rotas
     /* ***********  /
     /  FALTA FAZER  /
