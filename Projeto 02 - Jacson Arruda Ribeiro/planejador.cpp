@@ -2,8 +2,8 @@
 #include <cmath>
 #include <fstream>
 #include <limits>
-/* ACRESCENTE SE NECESSARIO */
-
+/*  FEITO PELO ALUNO EM 30 DE ABRIL DE 2026 */
+#include <algorithm>
 #include "planejador.h"
 
 using namespace std;
@@ -270,8 +270,60 @@ void Planejador::ler(const std::string& arq_pontos,
     // 4) Se n�o foi lido nenhuma Rota, gera erro (codigo 12)
     // 5) Fecha o arquivo de Rotas
     /* ***********  /
-    /  FALTA FAZER  /
+    /  FEITO PELO ALUNO EM 30 DE ABRIL DE 2026  /
     /  *********** */
+     ifstream arq_rt(arq_rotas);
+    if (!arq_rt.is_open()) throw 1;
+
+    string cabecalho;
+    arq_rt >> ws;
+    getline(arq_rt, cabecalho);
+    trim(cabecalho);
+    if (arq_rt.fail() || cabecalho != "ID;Nome;Extremidade 1;Extremidade 2;Comprimento") throw 2;
+
+    arq_rt >> ws;
+    while (!arq_rt.eof()) {
+        Rota r;
+        string id_str, id_ext1, id_ext2;
+
+        getline(arq_rt, id_str, ';');
+        trim(id_str);
+        if (arq_rt.fail() || id_str.empty()) throw 3;
+        r.id.set(move(id_str));
+
+        arq_rt >> ws;
+        getline(arq_rt, r.nome, ';');
+        trim(r.nome);
+        if (arq_rt.fail() || r.nome.empty()) throw 4;
+
+        arq_rt >> ws;
+        getline(arq_rt, id_ext1, ';');
+        trim(id_ext1);
+        if (arq_rt.fail() || id_ext1.empty()) throw 5;
+        r.extremidade[0].set(move(id_ext1));
+
+        arq_rt >> ws;
+        getline(arq_rt, id_ext2, ';');
+        trim(id_ext2);
+        if (arq_rt.fail() || id_ext2.empty()) throw 6;
+        r.extremidade[1].set(move(id_ext2));
+
+        arq_rt >> r.comprimento;
+        if (arq_rt.fail()) throw 7;
+
+        arq_rt >> ws;
+
+        if (!r.valid()) throw 8;
+
+        if (find(pts_temp.begin(), pts_temp.end(), r.extremidade[0]) == pts_temp.end()) throw 9;
+        if (find(pts_temp.begin(), pts_temp.end(), r.extremidade[1]) == pts_temp.end()) throw 10;
+        if (find(rts_temp.begin(), rts_temp.end(), r) != rts_temp.end()) throw 11;
+
+        rts_temp.push_back(r);
+    }
+
+    if (rts_temp.empty()) throw 12;
+    arq_rt.close();
   }
   catch (int i)
   {
@@ -284,8 +336,10 @@ void Planejador::ler(const std::string& arq_pontos,
   // Faz os vetores de Pontos e Rotas do planejador assumirem o conteudo dos
   // vetores temporarios de Pontos e Rotas
   /* ***********  /
-  /  FALTA FAZER  /
+  /  FEITO PELO ALUNO EM 30 DE ABRIL DE 2026  /
   /  *********** */
+  pontos = move(pts_temp);
+  rotas = move(rts_temp);
 }
 
 /// Retorna um Ponto do mapa, passando a id como parametro.

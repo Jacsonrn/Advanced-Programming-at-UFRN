@@ -150,8 +150,15 @@ struct Rota
   // Sobrecarga de operadores
   // Utilizados pelos algoritmos STL
   /* ***********  /
-  /  FALTA FAZER  /
+  /   FEITO PELO ALUNO EM 30 DE ABRIL DE 2026  /
   /  *********** */
+  bool operator==(const Rota& R) const {
+    return id == R.id;
+}
+
+  bool operator==(const IDRota& ID) const {
+    return id == ID;
+}
 
   // Retorna a outra extremidade da rota, a que nao eh o parametro.
   // Gera excecao se o parametro nao for uma das extremidades da rota.
