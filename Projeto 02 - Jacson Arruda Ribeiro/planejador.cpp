@@ -5,6 +5,9 @@
 /*  FEITO PELO ALUNO EM 30 DE ABRIL DE 2026 */
 #include <algorithm>
 #include "planejador.h"
+/*   FEITO PELO ALUNO EM 02 DE MAIO DE 2026 */
+#include <list>
+#include <vector>
 
 using namespace std;
 
@@ -383,8 +386,19 @@ Rota Planejador::getRota(const IDRota& Id) const
 /// Noh: struct/classe dos elementos dos conjuntos de busca do algoritmo A*.
 /// Deve ser DECLARADA E IMPLEMENTADA inteiramente.
 /* ***********  /
-/  FALTA FAZER  /
+/  FEITO PELO ALUNO EM 02 DE MAIO DE 2026   /
 /  *********** */
+struct Noh {
+    IDPonto id_pt; // ID do ponto
+    IDRota id_rt;  // ID da rota do antecessor até o ponto
+    double g;      // Custo passado
+    double h;      // Custo futuro
+
+    // Custo total
+    double f() const {
+        return g + h;
+    }
+};
 
 /// Calcula o caminho mais curto no mapa entre origem e destino, usando o algoritmo A*
 /// Retorna o comprimento do caminho encontrado (<0 se nao existe caminho).
@@ -422,8 +436,41 @@ double Planejador::calculaCaminho(const IDPonto& id_origem,
     /  ***************************** */
 
     /* ***********  /
-    /  FALTA FAZER  /
+    /  FEITO PELO ALUNO EM 02 DE MAIO DE 2026  /
     /  *********** */
+    list<Noh> Aberto;
+    vector<Noh> Fechado;
+
+    Noh atual;
+    atual.id_pt = id_origem;
+    atual.id_rt = IDRota(); // Rota vazia
+    atual.g = 0.0;
+    atual.h = pt_origem.distancia(pt_destino);
+
+    Aberto.push_back(atual);
+
+    /*/ FEITO PELO ALUNO EM 02 DE MAIO DE 2026 */
+
+    while (!Aberto.empty() && atual.id_pt != id_destino) {
+        atual = Aberto.front();
+        Aberto.pop_front();
+        Fechado.push_back(atual);
+
+        /* *********** /
+        /  FEITO PELO ALUNO EM 02 DE MAIO DE 2026 /
+        / ***********  */
+          if (atual.id_pt != id_destino) {
+            for (const auto& rota_suc : rotas) {
+                if (rota_suc.extremidade == atual.id_pt || rota_suc.extremidade[2] == atual.id_pt) {
+                    
+                    /* *********** /
+                    / FALTA FAZER /
+                    / ***********  */
+                    
+                }
+            }
+        }
+    }
 
     // Substitua pelo caminho correto
     C = Caminho();
