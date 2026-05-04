@@ -464,8 +464,19 @@ double Planejador::calculaCaminho(const IDPonto& id_origem,
                 if (rota_suc.extremidade == atual.id_pt || rota_suc.extremidade[2] == atual.id_pt) {
                     
                     /* *********** /
-                    / FALTA FAZER /
+                    /  FEITO PELO ALUNO EM 04 DE MAIO DE 2026 /
                     / ***********  */
+                    Noh suc;
+                    suc.id_pt = rota_suc.outraExtremidade(atual.id_pt);
+                    suc.id_rt = rota_suc.id;
+                    suc.g = atual.g + rota_suc.comprimento;
+
+                    Ponto pt_suc = getPonto(suc.id_pt);
+                    suc.h = pt_suc.distancia(pt_destino);
+
+                    /* *********** /
+                    / FALTA FAZER /
+                    / ***********  */  
                     
                 }
             }
