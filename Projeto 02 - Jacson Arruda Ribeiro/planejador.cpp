@@ -352,12 +352,14 @@ Ponto Planejador::getPonto(const IDPonto& Id) const
 {
   // Procura um ponto que corresponde aa Id do parametro
   /* ***********  /
-  /  FALTA FAZER  /
+  /   FEITO PELO ALUNO EM 05 DE MAIO DE 2026   /
   /  *********** */
+  auto it = find_if(pontos.begin(), pontos.end(), [&Id](const Ponto& p) { return p.id == Id; });
   // Em caso de sucesso, retorna o ponto encontrado
   /* ***********  /
-  /  FALTA FAZER  /
+  /  FEITO PELO ALUNO EM 05 DE MAIO DE 2026   /
   /  *********** */
+  if (it != pontos.end()) return *it;
   // Se nao encontrou, gera excecao
   throw invalid_argument("getPonto: invalid IDPonto parameter");
 }
@@ -369,12 +371,14 @@ Rota Planejador::getRota(const IDRota& Id) const
 {
   // Procura uma rota que corresponde aa Id do parametro
   /* ***********  /
-  /  FALTA FAZER  /
+  /   FEITO PELO ALUNO EM 05 DE MAIO DE 2026  /
   /  *********** */
+  auto it = find_if(rotas.begin(), rotas.end(), [&Id](const Rota& r) { return r.id == Id; });
   // Em caso de sucesso, retorna a rota encontrada
   /* ***********  /
-  /  FALTA FAZER  /
+  /  FEITO PELO ALUNO EM 05 DE MAIO DE 2026  /
   /  *********** */
+  if (it != rotas.end()) return *it;
   // Se nao encontrou, gera excecao
   throw invalid_argument("getRota: invalid IDRota parameter");
 }
