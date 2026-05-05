@@ -398,6 +398,9 @@ struct Noh {
     double f() const {
         return g + h;
     }
+    bool operator<(const Noh& outro) const {
+        return f() < outro.f();
+    }
 };
 
 /// Calcula o caminho mais curto no mapa entre origem e destino, usando o algoritmo A*
@@ -461,7 +464,7 @@ double Planejador::calculaCaminho(const IDPonto& id_origem,
         / ***********  */
           if (atual.id_pt != id_destino) {
             for (const auto& rota_suc : rotas) {
-                if (rota_suc.extremidade == atual.id_pt || rota_suc.extremidade[2] == atual.id_pt) {
+                if (rota_suc.extremidade[0] == atual.id_pt || rota_suc.extremidade[1] == atual.id_pt) {
                     
                     /* *********** /
                     /  FEITO PELO ALUNO EM 04 DE MAIO DE 2026 /
@@ -475,19 +478,64 @@ double Planejador::calculaCaminho(const IDPonto& id_origem,
                     suc.h = pt_suc.distancia(pt_destino);
 
                     /* *********** /
-                    / FALTA FAZER /
+                    / FEITO PELO ALUNO EM 05 DE MAIO DE 2026 /
                     / ***********  */  
+                    bool eh_inedito = true;
+
+                    auto it_fechado = find_if(Fechado.begin(), Fechado.end(), 
+                        [&suc](const Noh& n) { return n.id_pt == suc.id_pt; });
+
+                    if (it_fechado != Fechado.end()) {
+                        eh_inedito = false;
+                    } else {
+                        auto it_aberto = find_if(Aberto.begin(), Aberto.end(), 
+                            [&suc](const Noh& n) { return n.id_pt == suc.id_pt; });
+
+                        if (it_aberto != Aberto.end()) {
+                            if (suc.f() < it_aberto->f()) {
+                                Aberto.erase(it_aberto);
+                            } else {
+                                eh_inedito = false;
+                            }
+                        }
+                    }
+
+                    /* *********** /
+                    / FEITO PELO ALUNO EM 05 DE MAIO DE 2026 /
+                    / ***********  */
+                    if (eh_inedito) {
+                        auto it_ins = upper_bound(Aberto.begin(), Aberto.end(), suc);
+                        Aberto.insert(it_ins, suc);
+                    }
                     
                 }
             }
         }
     }
 
-    // Substitua pelo caminho correto
-    C = Caminho();
+    // FEITO PELO ALUNO EM 05 DE MAIO DE 2026
+   NumAberto = Aberto.size();
+    NumFechado = Fechado.size();
 
-    // Substitua pelo valor correto
-    return -1.0;
+    if (atual.id_pt != id_destino) {
+        return -1.0; 
+    }
+
+    double Compr = atual.g;
+
+    while (atual.id_rt.valid()) {
+        C.push(Trecho(atual.id_rt, atual.id_pt));
+        Rota rota_ant = getRota(atual.id_rt);
+        IDPonto id_pt_ant = rota_ant.outraExtremidade(atual.id_pt);
+
+        auto it_ant = find_if(Fechado.begin(), Fechado.end(), 
+            [&id_pt_ant](const Noh& n) { return n.id_pt == id_pt_ant; });
+        atual = *it_ant;
+    }
+
+    C.push(Trecho(IDRota(), atual.id_pt));
+
+    return Compr;
   }
   catch(int i)
   {
