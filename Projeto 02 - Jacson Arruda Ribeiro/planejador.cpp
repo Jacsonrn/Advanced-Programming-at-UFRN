@@ -354,7 +354,7 @@ Ponto Planejador::getPonto(const IDPonto& Id) const
   /* ***********  /
   /   FEITO PELO ALUNO EM 05 DE MAIO DE 2026   /
   /  *********** */
-  auto it = find_if(pontos.begin(), pontos.end(), [&Id](const Ponto& p) { return p.id == Id; });
+  auto it = find(pontos.begin(), pontos.end(), Id);
   // Em caso de sucesso, retorna o ponto encontrado
   /* ***********  /
   /  FEITO PELO ALUNO EM 05 DE MAIO DE 2026   /
@@ -373,7 +373,7 @@ Rota Planejador::getRota(const IDRota& Id) const
   /* ***********  /
   /   FEITO PELO ALUNO EM 05 DE MAIO DE 2026  /
   /  *********** */
-  auto it = find_if(rotas.begin(), rotas.end(), [&Id](const Rota& r) { return r.id == Id; });
+  auto it = find(rotas.begin(), rotas.end(), Id);
   // Em caso de sucesso, retorna a rota encontrada
   /* ***********  /
   /  FEITO PELO ALUNO EM 05 DE MAIO DE 2026  /
@@ -404,6 +404,10 @@ struct Noh {
     }
     bool operator<(const Noh& outro) const {
         return f() < outro.f();
+    }
+    // FEITO PELO ALUNO EM 08 DE MAIO DE 2026 
+    bool operator==(const IDPonto& id) const {
+        return id_pt == id;
     }
 };
 
@@ -486,14 +490,12 @@ double Planejador::calculaCaminho(const IDPonto& id_origem,
                     / ***********  */  
                     bool eh_inedito = true;
 
-                    auto it_fechado = find_if(Fechado.begin(), Fechado.end(), 
-                        [&suc](const Noh& n) { return n.id_pt == suc.id_pt; });
-
+                   /* FEITO PELO ALUNO EM 08 DE MAIO DE 2026 */
+                    auto it_fechado = find(Fechado.begin(), Fechado.end(), suc.id_pt);
                     if (it_fechado != Fechado.end()) {
                         eh_inedito = false;
-                    } else {
-                        auto it_aberto = find_if(Aberto.begin(), Aberto.end(), 
-                            [&suc](const Noh& n) { return n.id_pt == suc.id_pt; });
+                    } else {                       
+                        auto it_aberto = find(Aberto.begin(), Aberto.end(), suc.id_pt);
 
                         if (it_aberto != Aberto.end()) {
                             if (suc.f() < it_aberto->f()) {
@@ -532,8 +534,7 @@ double Planejador::calculaCaminho(const IDPonto& id_origem,
         Rota rota_ant = getRota(atual.id_rt);
         IDPonto id_pt_ant = rota_ant.outraExtremidade(atual.id_pt);
 
-        auto it_ant = find_if(Fechado.begin(), Fechado.end(), 
-            [&id_pt_ant](const Noh& n) { return n.id_pt == id_pt_ant; });
+        auto it_ant = find(Fechado.begin(), Fechado.end(), id_pt_ant);
         atual = *it_ant;
     }
 

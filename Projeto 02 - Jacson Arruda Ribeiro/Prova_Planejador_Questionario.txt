@@ -1,0 +1,226 @@
+PROVA - PROGRAMAÇÃO AVANÇADA
+Projeto Planejador
+
+Alun@: Jacson Arruda Ribeiro
+
+===========================================================
+QUESTÃO 1:
+Substitua os "##" pelo número de acertos e erros da sua execução
+
+1.A) QUANTIDADE DE CONJUNTOS CORRETOS LIDOS:
+3 LIDOS (OK), 0 NÃO LIDOS (ERRO), TOTAL 3
+
+1.B) QUANTIDADE DE ARQUIVOS DE PONTOS INCORRETOS NÃO LIDOS:
+24 NÃO LIDOS (OK), 0 LIDOS (ERRO), TOTAL 24
+
+1.C) QUANTIDADE DE ARQUIVOS DE ROTAS INCORRETOS NÃO LIDOS:
+24 NÃO LIDOS (OK), 0 LIDOS (ERRO), TOTAL 24
+
+===========================================================
+QUESTÃO 2:
+
+Para cada um dos 15 (quinze) caminhos da questão, você deve executar seu programa Planejador para calcular o caminho mais curto entre a origem e o destino. Em seguida, copie da tela do console e cole neste arquivo o resultado calculado pelo programa:
+- Tempo de execução;
+- Número final de nós em Aberto e Fechado;
+- Comprimento total do caminho; e
+- As rotas e nós do caminho encontrado.
+O que deve ser copiado da tela são as linhas:
+
+ID do ponto de origem: ___
+ID do ponto de destino: ___
+Tempo: ___ms Nohs em aberto: ___ fechado: ___
+TOTAL: ___km
+==========
+De ___
+Por ___ ateh ___ (___km)
+Por ___ ateh ___ (___km)
+
+
+CAMINHO 2.1:
+ID do ponto de origem: #1
+ID do ponto de destino: #3
+Tempo: 0ms      Nohs em aberto: 1 fechado: 2
+TOTAL: 7.8km
+==========
+De Natal - Viaduto de Ponta Negra
+Por BR101 ateh Parnamirim (7.8km)
+
+CAMINHO 2.2:
+ID do ponto de origem: #5
+ID do ponto de destino: #7
+Tempo: 1.032ms  Nohs em aberto: 6 fechado: 7
+TOTAL: 30km
+==========
+De Macaiba
+Por RN160 ateh Sao Goncalo do Amarante (10.8km)
+Por RN160 ateh Sao Goncalo do Amarante - Entroncamento 1 (7.6km)
+Por BR101 ateh Sao Goncalo do Amarante - Entroncamento 2 (2.1km)
+Por BR101 ateh Natal - Estacao Bela Vista (5.1km)
+Por RN307 ateh Extremoz (4.4km)
+
+CAMINHO 2.3:
+ID do ponto de origem: #9
+ID do ponto de destino: #11
+Tempo: 0ms      Nohs em aberto: 5 fechado: 6
+TOTAL: 145.3km
+==========
+De Assu
+Por BR304 ateh Assu - Entroncamento 1 (6km)
+Por RN233 ateh Triunfo Potiguar (41.2km)
+Por BR226 ateh Jucurutu (30.9km)
+Por BR226 ateh Currais Novos (67.2km)
+
+CAMINHO 2.4:
+ID do ponto de origem: #13
+ID do ponto de destino: #15
+Tempo: 0ms      Nohs em aberto: 7 fechado: 19
+TOTAL: 281.3km
+==========
+De Apodi
+Por RN233 ateh Apodi - Entrocamento 1 (5.8km)
+Por RN233 ateh Caraubas (32.3km)
+Por RN233 ateh Campo Grande (30.8km)
+Por BR226 ateh Triunfo Potiguar (14.4km)
+Por RN233 ateh Assu - Entroncamento 1 (41.2km)
+Por BR304 ateh Assu (6km)
+Por BR304 ateh Itaja (6.7km)
+Por BR304 ateh Lajes (72km)
+Por BR304 ateh Riachuelo - Entroncamento 1 (44.2km)
+Por RN120 ateh Joao Camara (27.9km)
+
+CAMINHO 2.5:
+ID do ponto de origem: #17
+ID do ponto de destino: #19
+Tempo: 0ms      Nohs em aberto: 2 fechado: 4
+TOTAL: 41.2km
+==========
+De Nisia Floresta
+Por RN063 ateh Sao Jose de Mipibu (3.3km)
+Por BR101 ateh Goianinha (22.2km)
+Por BR101 ateh Canguaretama (15.7km)
+
+CAMINHO 2.6:
+ID do ponto de origem: #22
+ID do ponto de destino: #28
+Tempo: 1.033ms  Nohs em aberto: 9 fechado: 29
+TOTAL: 322.1km
+==========
+De Goianinha
+Por RN003 ateh Santo Antonio (32.7km)
+Por RN120 ateh Serrinha (6.3km)
+Por RN120 ateh Serra Caiada (29.6km)
+Por BR226 ateh Santa Cruz (43.9km)
+Por BR226 ateh Currais Novos - Entroncamento 1 (48.8km)
+Por BR226 ateh Currais Novos (17.5km)
+Por BR226 ateh Jucurutu (67.2km)
+Por BR226 ateh Triunfo Potiguar (30.9km)
+Por BR226 ateh Campo Grande (14.4km)
+Por RN233 ateh Caraubas (30.8km)
+
+CAMINHO 2.7:
+ID do ponto de origem: #42
+ID do ponto de destino: #61
+Tempo: 1.033ms  Nohs em aberto: 9 fechado: 12
+TOTAL: 220.8km
+==========
+De Alto do Rodrigues - Entroncamento 1
+Por RN118 ateh Itaja (42.8km)
+Por BR304 ateh Assu (6.7km)
+Por BR304 ateh Assu - Entroncamento 1 (6km)
+Por RN233 ateh Triunfo Potiguar (41.2km)
+Por BR226 ateh Jucurutu (30.9km)
+Por BR226 ateh Currais Novos (67.2km)
+Por BR427 ateh Acari (26km)
+
+CAMINHO 2.8:
+ID do ponto de origem: #72
+ID do ponto de destino: #88
+Tempo: 0ms      Nohs em aberto: 2 fechado: 2
+TOTAL: 44.2km
+==========
+De Lajes
+Por BR304 ateh Riachuelo - Entroncamento 1 (44.2km)
+
+CAMINHO 2.9:
+ID do ponto de origem: #95
+ID do ponto de destino: #143
+Tempo: 0ms      Nohs em aberto: 7 fechado: 9
+TOTAL: 237.9km
+==========
+De Serrinha
+Por RN120 ateh Serra Caiada (29.6km)
+Por BR226 ateh Santa Cruz (43.9km)
+Por BR226 ateh Currais Novos - Entroncamento 1 (48.8km)
+Por BR226 ateh Currais Novos (17.5km)
+Por BR226 ateh Jucurutu (67.2km)
+Por BR226 ateh Triunfo Potiguar (30.9km)
+
+CAMINHO 2.10:
+ID do ponto de origem: #6
+ID do ponto de destino: #4
+Tempo: 0ms      Nohs em aberto: 3 fechado: 4
+TOTAL: 30.2km
+==========
+De Ceara-Mirim
+Por BR406 ateh Sao Goncalo do Amarante - Entroncamento 2 (20.5km)
+Por BR101 ateh Sao Goncalo do Amarante - Entroncamento 1 (2.1km)
+Por RN160 ateh Sao Goncalo do Amarante (7.6km)
+
+CAMINHO 2.11:
+ID do ponto de origem: #16
+ID do ponto de destino: #18
+Tempo: 0ms      Nohs em aberto: 11 fechado: 16
+TOTAL: 385.8km
+==========
+De Touros
+Por RN023 ateh Joao Camara (53.6km)
+Por RN120 ateh Riachuelo - Entroncamento 1 (27.9km)
+Por BR304 ateh Lajes (44.2km)
+Por BR304 ateh Itaja (72km)
+Por BR304 ateh Assu (6.7km)
+Por BR304 ateh Assu - Entroncamento 1 (6km)
+Por RN233 ateh Triunfo Potiguar (41.2km)
+Por BR226 ateh Campo Grande (14.4km)
+Por BR226 ateh Patu (48.1km)
+Por BR226 ateh Pau dos Ferros (71.7km)
+CAMINHO 2.12:
+ID do ponto de origem: #2
+ID do ponto de destino: #14
+Tempo: 1.007ms  Nohs em aberto: 11 fechado: 27
+TOTAL: 325.4km
+==========
+De Mossoro - Centro
+Por Av. Pres. Dutra ateh Mossoro - Entroncamento 1 (4.2km)
+Por BR304 ateh Assu - Entroncamento 1 (58.4km)
+Por BR304 ateh Assu (6km)
+Por BR304 ateh Itaja (6.7km)
+Por BR304 ateh Lajes (72km)
+Por BR304 ateh Riachuelo - Entroncamento 1 (44.2km)
+Por BR304 ateh Santa Maria (21.5km)
+Por BR304 ateh Macaiba - Tabajara (22.6km)
+Por BR226 ateh Serra Caiada (34.6km)
+Por RN120 ateh Serrinha (29.6km)
+Por RN120 ateh Santo Antonio (6.3km)
+Por RN120 ateh Nova Cruz (19.3km)
+
+CAMINHO 2.13:
+ID do ponto de origem: #0
+ID do ponto de destino: #10
+Tempo: 0ms      Nohs em aberto: 0 fechado: 1
+TOTAL: -1km
+Algoritmo concluido. Nenhum caminho foi encontrado
+
+CAMINHO 2.14:
+ID do ponto de origem: #12
+ID do ponto de destino: #0
+Tempo: 2.025ms  Nohs em aberto: 0 fechado: 52
+TOTAL: -1km
+Algoritmo concluido. Nenhum caminho foi encontrado
+
+CAMINHO 2.15:
+ID do ponto de origem: #0
+ID do ponto de destino: #0
+Tempo: 0ms      Nohs em aberto: 1 fechado: 0
+TOTAL: 0km
+==========
+De Fernando de Noronha
