@@ -33,6 +33,17 @@ O segundo projeto consiste em um sistema de planejamento de rotas terrestres. O 
 
 ---
 
+## Projeto 03: Plotador de Funções
+
+O terceiro projeto foca no desenvolvimento de uma aplicação com Interface Gráfica de Usuário (GUI) para a plotagem e visualização interativa de funções matemáticas em um plano cartesiano.
+
+**Principais aprendizados e características:**
+- **Uso do Framework Qt:** Introdução ao desenvolvimento de interfaces gráficas usando a biblioteca Qt (Widgets), explorando o paradigma de programação orientada a eventos com *Signals e Slots*.
+- **Renderização Gráfica Customizada:** Utilização de herança em componentes visuais (`QLabel`) para criar uma classe de `Grafico` independente, responsável pela lógica de renderização (`QPainter`) e pela complexa tradução e mapeamento de coordenadas (Pixels da Tela vs. Plano Cartesiano Real).
+- **Interatividade Dinâmica:** Construção de uma interface rica que se adapta automaticamente a redimensionamentos, lê limites através de SpinBoxes, lista as funções ativas com suas respectivas cores utilizando tabelas (`QTableWidget`) e identifica pontos no plano via eventos de clique com o mouse.
+
+---
+
 ## Como executar
 
 Os códigos foram escritos seguindo o padrão **C++17**. Para compilar os projetos, recomenda-se o uso do compilador `g++`.
