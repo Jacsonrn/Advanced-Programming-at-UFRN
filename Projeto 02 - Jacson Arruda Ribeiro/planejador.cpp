@@ -380,7 +380,7 @@ Rota Planejador::getRota(const IDRota& Id) const
   /  *********** */
   if (it != rotas.end()) return *it;
   // Se nao encontrou, gera excecao
-  throw invalid_argument("getRota: invalid IDRota parameter");
+  throw invalid_argument("getRota: invalid IDRota parameter");g++ planejador-main.cpp planejador.cpp -o planejador
 }
 
 /// *******************************************************************************
