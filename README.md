@@ -44,6 +44,17 @@ O terceiro projeto foca no desenvolvimento de uma aplicação com Interface Grá
 
 ---
 
+## Projeto 04: Conversor e Renderizador de Formas (SVG)
+
+O quarto projeto consiste no desenvolvimento de um motor de plotagem vetorial orientado a objetos. Ele lê instruções de formas geométricas a partir de arquivos de texto e gera uma imagem correspondente no formato SVG (*Scalable Vector Graphics*).
+
+**Principais aprendizados e características:**
+- **Polimorfismo e Herança:** Uso de uma classe base genérica (`Shape`) com métodos virtuais para armazenar e manipular diversas formas (linhas, círculos, retângulos, estrelas, etc.) em uma coleção polimórfica (`std::vector<pShape>`).
+- **Gerenciamento Seguro de Memória (Regra dos 5):** Implementação rigorosa de construtores de cópia/movimento, operadores de atribuição e destrutores na classe gerenciadora (`Designer`) para evitar vazamentos de memória na manipulação de ponteiros dinâmicos.
+- **Tratamento de Exceções e Manipulação de Arquivos:** Leitura iterativa de arquivos `.txt`, extraindo parâmetros e delegando a renderização nativa de tags XML/SVG às respectivas instâncias, abortando de forma limpa em caso de erros e lidando de forma nativa com exceções de I/O.
+
+---
+
 ## Como executar
 
 Os códigos foram escritos seguindo o padrão **C++17**. Para compilar os projetos, recomenda-se o uso do compilador `g++`.
