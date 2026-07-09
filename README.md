@@ -55,6 +55,18 @@ O quarto projeto consiste no desenvolvimento de um motor de plotagem vetorial or
 
 ---
 
+## Projeto 05: SupTanques (Supervisório Cliente-Servidor)
+
+O quinto projeto tem como objetivo o desenvolvimento de um sistema supervisório baseado na arquitetura Cliente-Servidor. O sistema simula e monitora, em tempo real, uma planta industrial composta por dois tanques de água interagentes (calculando a física dos fluidos com equações diferenciais).
+
+**Principais aprendizados e características:**
+- **Comunicação em Rede (Sockets):** Implementação de comunicação TCP/IP nativa para gerenciar múltiplas conexões simultâneas entre o servidor central e os clientes (gráficos ou de terminal).
+- **Concorrência e Sincronização:** Uso de multithreading (`std::thread`) para escuta de rede e processamento em paralelo com a interface, além de controle de concorrência com exclusão mútua (`std::mutex`) para proteger o fluxo de pacotes.
+- **Interface Gráfica e Herança Múltipla:** Integração da lógica de rede com o framework Qt, utilizando herança múltipla e manipulação segura da interface visual através do sistema de *Signals e Slots*.
+- **Protocolos e Permissões:** Implementação de um protocolo de *handshake* e simulação de níveis de acesso (Administradores com controle ativo das válvulas e bombas vs. Visualizadores em modo *Read-Only*).
+
+---
+
 ## Como executar
 
 Os códigos foram escritos seguindo o padrão **C++17**. Para compilar os projetos, recomenda-se o uso do compilador `g++`.
