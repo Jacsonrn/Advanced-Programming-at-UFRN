@@ -6,6 +6,10 @@
 #include <cstdint>  /* uint16_t */
 #include "supdados.h"
 /* ACRESCENTAR */
+#include "mysocket.h"
+#include <thread>
+#include <mutex>
+#include <chrono>
 
 class SupCliente
 {
@@ -19,7 +23,7 @@ protected:
   // Funcoes de consulta
   //
   // Cliente conectado (true) ou desconectado (false)
-  bool isConnected() const {return /* MODIFICAR */ false;}
+  bool isConnected() const {return sock.connected();}
   // Cliente administrador (true) ou visualizador (false)
   bool isAdmin() const {return is_admin;}
   // Ultimo estado da planta
@@ -36,7 +40,7 @@ protected:
   void desconectar();
 
   // Espera pelo fim da thread de solicitacao de dados
-  void join_if_joinable() {/* ACRESCENTAR */}
+  void join_if_joinable() { if (thr_cliente.joinable()) thr_cliente.join(); }
 
   // As funcoes de comunicacao com o servidor
   //
@@ -110,13 +114,16 @@ private:
 
   // Socket de comunicacaco
   /* ACRESCENTAR */
+  tcp_mysocket sock;
 
   // Exclusao mutua para nao enviar novo comando antes de
   // receber a resposta do comando anterior
   /* ACRESCENTAR */
+  std::mutex mtx;
 
   // Identificador da thread de solicitacao periodica de dados
   /* ACRESCENTAR */
+  std::thread thr_cliente;
 };
 
 #endif // _SUP_CLIENTE_H_

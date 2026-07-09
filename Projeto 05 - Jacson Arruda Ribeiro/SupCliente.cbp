@@ -26,7 +26,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-D_WIN32_WINNT=0x0601" />
 		</Compiler>
+		<Unit filename="mysocket.cpp" />
+		<Unit filename="mysocket.h" />
 		<Unit filename="supcliente.cpp" />
 		<Unit filename="supcliente.h" />
 		<Unit filename="supcliente_main_term.cpp" />

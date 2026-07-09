@@ -3,18 +3,24 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
+DEFINES += _WIN32_WINNT=0x0601
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    mysocket.cpp \
+    supcliente.cpp \
+    supdados.cpp \
     supcliente_main_qt.cpp \
     supcliente_qt.cpp \
     supimg.cpp \
     suplogin.cpp
 
 HEADERS += \
+    mysocket.h \
+    supcliente.h \
     supcliente_qt.h \
     supdados.h \
     supimg.h \

@@ -15,11 +15,13 @@ SupServidor::SupServidor()
   , server_on(false)
   , LU()
   /*ACRESCENTAR*/
+  , sock_conexao()
 {
   // Inicializa a biblioteca de sockets
   /*ACRESCENTAR*/
+  mysocket_status err = mysocket::init();
   // Em caso de erro, mensagem e encerra
-  if (/*MODIFICAR*/true)
+  if (err != mysocket_status::SOCK_OK)
   {
     cerr <<  "Biblioteca mysocket nao pode ser inicializada";
     exit(-1);
@@ -36,12 +38,15 @@ SupServidor::~SupServidor()
   for (auto& U : LU) U.close();
   // Fecha o socket de conexoes
   /*ACRESCENTAR*/
+  sock_conexao.close();
 
   // Espera o fim da thread do servidor
   /*ACRESCENTAR*/
+  if (thr_server.joinable()) thr_server.join();
 
   // Encerra a biblioteca de sockets
   /*ACRESCENTAR*/
+  mysocket::end();
 }
 
 /// Liga o servidor
@@ -60,13 +65,15 @@ bool SupServidor::setServerOn()
   {
     // Coloca o socket de conexoes em escuta
     /*ACRESCENTAR*/
+    mysocket_status err = sock_conexao.listen(SUP_PORT, 5);
     // Em caso de erro, gera excecao
-    if (/*MODIFICAR*/true) throw 1;
+    if (err != mysocket_status::SOCK_OK) throw 1;
 
     // Lanca a thread do servidor que comunica com os clientes
     /*ACRESCENTAR*/
+    thr_server = std::thread(&SupServidor::thr_server_main, this);
     // Em caso de erro, gera excecao
-    if (/*MODIFICAR*/true) throw 2;
+    if (!thr_server.joinable()) throw 2;
   }
   catch(int i)
   {
@@ -77,6 +84,7 @@ bool SupServidor::setServerOn()
 
     // Fecha o socket do servidor
     /*ACRESCENTAR*/
+    sock_conexao.close();
 
     return false;
   }
@@ -98,11 +106,14 @@ void SupServidor::setServerOff()
   for (auto& U : LU) U.close();
   // Fecha o socket de conexoes
   /*ACRESCENTAR*/
+  sock_conexao.close();
 
   // Espera pelo fim da thread do servidor
   /*ACRESCENTAR*/
+  if (thr_server.joinable()) thr_server.join();
   // Faz o identificador da thread apontar para thread vazia
   /*ACRESCENTAR*/
+  thr_server = std::thread();
 
   // Desliga os tanques
   setTanksOff();
@@ -203,7 +214,7 @@ bool SupServidor::removeUser(const string& Login)
 void SupServidor::thr_server_main(void)
 {
   // Fila de sockets para aguardar chegada de dados
-  /*ACRESCENTAR*/
+  mysocket_queue fila;
 
   while (server_on)
   {
@@ -212,42 +223,115 @@ void SupServidor::thr_server_main(void)
     try
     {
       // Encerra se o socket de conexoes estiver fechado
-      if (/*MODIFICAR*/true)
+      if (!sock_conexao.connected())
       {
         throw "socket de conexoes fechado";
       }
 
-      // Inclui na fila de sockets todos os sockets que eu
-      // quero monitorar para ver se houve chegada de dados
-
       // Limpa a fila de sockets
-      /*ACRESCENTAR*/
+      fila.clear();
       // Inclui na fila o socket de conexoes
-      /*ACRESCENTAR*/
+      fila.include(sock_conexao);
       // Inclui na fila todos os sockets dos clientes conectados
-      /*ACRESCENTAR*/
+      for (auto& U : LU) {
+        if (U.isConnected()) fila.include(U.sock);
+      }
 
       // Espera ateh que chegue dado em algum socket (com timeout)
-      /*ACRESCENTAR*/
+      mysocket_status status = fila.wait_read(SUP_TIMEOUT * 1000);
 
-      // De acordo com o resultado da espera:
-      // SOCK_TIMEOUT:
-      // Saiu por timeout: nao houve atividade em nenhum socket
-      // Aproveita para salvar dados ou entao nao faz nada
-      // SOCK_ERROR:
-      // Erro no select: encerra o servidor
-      // SOCK_OK:
-      // Houve atividade em algum socket da fila:
-      //   Testa se houve atividade nos sockets dos clientes. Se sim:
-      //   - Leh o comando
-      //   - Executa a acao
-      //   = Envia resposta
-      //   Depois, testa se houve atividade no socket de conexao. Se sim:
-      //   - Estabelece nova conexao em socket temporario
-      //   - Leh comando, login e senha
-      //   - Testa usuario
-      //   - Se deu tudo certo, faz o socket temporario ser o novo socket
-      //     do cliente e envia confirmacao
+      if (status == mysocket_status::SOCK_ERROR) {
+        throw "Erro fatal no select() dos sockets";
+      }
+
+      if (status == mysocket_status::SOCK_OK) {
+        // Houve atividade em algum socket da fila:
+
+        // 1. Testa se houve atividade nos sockets dos clientes. Se sim:
+        for (auto itr = LU.begin(); itr != LU.end(); ++itr) {
+            if (itr->isConnected() && fila.had_activity(itr->sock)) {
+                uint16_t cmd;
+                if (itr->sock.read_uint16(cmd) == mysocket_status::SOCK_OK) {
+                    if (cmd == SupCommands::CMD_GET_DATA) {
+                        SupState S;
+                        readStateFromSensors(S);
+                        itr->sock.write_uint16(SupCommands::CMD_DATA);
+                        itr->sock.write_bytes((const mybyte*)&S, sizeof(SupState)); // Envia a struct completa (7 uint16_t = 14 bytes)
+                    }
+                    else if (cmd == SupCommands::CMD_SET_V1) {
+                        uint16_t state;
+                        itr->sock.read_uint16(state);
+                        if (itr->isAdmin) {
+                            setV1Open(state != 0);
+                            itr->sock.write_uint16(SupCommands::CMD_OK);
+                            cout << "CMD_SET_V1 " << state << " DE " << itr->login << " (OK)\n";
+                        } else {
+                            itr->sock.write_uint16(SupCommands::CMD_ERROR);
+                        }
+                    }
+                    else if (cmd == SupCommands::CMD_SET_V2) {
+                        uint16_t state;
+                        itr->sock.read_uint16(state);
+                        if (itr->isAdmin) {
+                            setV2Open(state != 0);
+                            itr->sock.write_uint16(SupCommands::CMD_OK);
+                            cout << "CMD_SET_V2 " << state << " DE " << itr->login << " (OK)\n";
+                        } else {
+                            itr->sock.write_uint16(SupCommands::CMD_ERROR);
+                        }
+                    }
+                    else if (cmd == SupCommands::CMD_SET_PUMP) {
+                        uint16_t input;
+                        itr->sock.read_uint16(input);
+                        if (itr->isAdmin) {
+                            setPumpInput(input);
+                            itr->sock.write_uint16(SupCommands::CMD_OK);
+                            cout << "CMD_SET_PUMP " << input << " DE " << itr->login << " (OK)\n";
+                        } else {
+                            itr->sock.write_uint16(SupCommands::CMD_ERROR);
+                        }
+                    }
+                    else if (cmd == SupCommands::CMD_LOGOUT) {
+                        itr->sock.close();
+                        cout << "CMD_LOGOUT " << itr->login << "\n";
+                    }
+                } else {
+                    // Se o read falhar (Ex: cliente fechou abruptamente o terminal)
+                    itr->sock.close();
+                    cout << "CMD_LOGOUT " << itr->login << " (Conexao perdida)\n";
+                }
+            }
+        }
+
+        // 2. Depois, testa se houve atividade no socket de conexao (Novo Login).
+        if (fila.had_activity(sock_conexao)) {
+            tcp_mysocket sock_temp;
+            if (sock_conexao.accept(sock_temp) == mysocket_status::SOCK_OK) {
+                uint16_t cmd;
+                if (sock_temp.read_uint16(cmd) == mysocket_status::SOCK_OK && cmd == SupCommands::CMD_LOGIN) {
+                    string login, senha;
+                    sock_temp.read_string(login);
+                    sock_temp.read_string(senha);
+
+                    auto itr = std::find(LU.begin(), LU.end(), login);
+                    if (itr != LU.end() && itr->password == senha) {
+                        // Se usuário válido e senha bater
+                        if (itr->isConnected()) itr->sock.close(); // Derruba conexao antiga, se houver
+                        itr->sock = std::move(sock_temp); // Move o socket temporário para o usuário
+                        itr->sock.write_uint16(itr->isAdmin ? SupCommands::CMD_ADMIN_OK : SupCommands::CMD_OK);
+                        cout << "CMD_LOGIN " << login << " (OK)\n";
+                    } else {
+                        // Se não encontrar usuário ou senha errada
+                        sock_temp.write_uint16(SupCommands::CMD_ERROR);
+                        sock_temp.close();
+                        cout << "CMD_LOGIN inexistente (ERROR)\n";
+                    }
+                } else {
+                    sock_temp.close(); // Fecha se o comando não for LOGIN
+                }
+            }
+        }
+      }
 
     } // fim try - Erros mais graves que encerram o servidor
     catch(const char* err)  // Erros mais graves que encerram o servidor
@@ -260,13 +344,9 @@ void SupServidor::thr_server_main(void)
       // Fecha todos os sockets dos clientes
       for (auto& U : LU) U.close();
       // Fecha o socket de conexoes
-      /*ACRESCENTAR*/
+      sock_conexao.close();
 
       // Os tanques continuam funcionando
-
     } // fim catch - Erros mais graves que encerram o servidor
   } // fim while (server_on)
 }
-
-
-

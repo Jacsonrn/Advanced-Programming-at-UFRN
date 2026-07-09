@@ -2,7 +2,7 @@
 #define SUPCLIENTE_QT_H
 
 #include <QMainWindow>
-/* ACRESCENTAR */
+#include "supcliente.h"
 #include "suplogin.h"
 #include "supimg.h"
 
@@ -10,7 +10,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class SupClienteQt; }
 QT_END_NAMESPACE
 
-class SupClienteQt : public QMainWindow /* ACRESCENTAR */
+class SupClienteQt : public QMainWindow, public SupCliente
 {
   Q_OBJECT
 
@@ -20,7 +20,6 @@ public:
 
 // As funcoes virtuais que precisam ser implementadas na interface
 private:
-  /*
   // As funcoes virtuais puras de exibicao de dados que sao chamadas pela thread.
   // Para cada cliente, serao implementadas de acordo com a interface em uso.
   // Sao chamadas na thread: nao podem usar funcoes proibidas nesse contexto (soh emitir sinais).
@@ -37,7 +36,6 @@ private:
   void storeState(const SupState& lastS) override;
   // Limpa todos os estados armazenados da planta
   void clearState() override;
-  */
 
 signals:
   // Sinaliza a necessidade de exibir informacao de erro
